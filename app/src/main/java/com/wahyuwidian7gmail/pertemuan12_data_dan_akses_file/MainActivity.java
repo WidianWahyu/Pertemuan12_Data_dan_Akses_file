@@ -8,12 +8,15 @@ import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,10 @@ public class MainActivity extends Activity {
     EditText nama, telepon;
     TextView dataTelepon;
     Button tombolInput;
+
+    ListView daftarTelepon;
+    ArrayList<String> arrayKontak;
+    ArrayAdapter<String> adapter;
 
 
     @Override
@@ -32,6 +39,9 @@ public class MainActivity extends Activity {
         telepon = (EditText) findViewById(R.id.editTelepon);
         dataTelepon = (TextView) findViewById(R.id.textDataTelp);
         tombolInput = (Button) findViewById(R.id.buttonInput);
+
+        daftarTelepon = (ListView) findViewById(R.id.listview);
+        arrayKontak = new ArrayList<String>();
 
         tombolInput.setOnClickListener(new View.OnClickListener() {
 
@@ -89,6 +99,9 @@ public class MainActivity extends Activity {
 
             String infoData = "Data Telepon:\n";
 
+            arrayKontak.clear();
+            int no = 1;
+
             //proses membaca data
             while (input.available() > 0) {
                 input.read(bufNama);
@@ -103,18 +116,21 @@ public class MainActivity extends Activity {
                     dataTelepon = dataTelepon + (char) bufTelepon[i];
 
                 //format menampilkan data
-                infoData = infoData + " > " + dataNama + " - " +
-                        dataTelepon + "\n";
+                infoData = no + ". " + dataNama + " - " + dataTelepon;
+                arrayKontak.add(infoData);
+                no++;
             }
 
             //menampilkan data ke teks view
-            dataTelepon.setText(infoData);
             dataFile.close();
         }
         catch (IOException e) {
             Toast.makeText(getBaseContext(), "Kesalahan: " + e.getMessage(),
                     Toast.LENGTH_LONG).show();
         }
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, arrayKontak);
+        daftarTelepon.setAdapter(adapter);
     }
 }
 

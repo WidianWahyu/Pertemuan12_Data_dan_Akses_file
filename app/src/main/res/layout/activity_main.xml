@@ -63,4 +63,9 @@
         android:layout_height="wrap_content"
         android:text="Data Telepon: \n"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
